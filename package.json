@@ -1,5 +1,6 @@
 {
   "name": "express-mesto-gha",
+  "author": "kirill.v.chistov@yandex.ru",
   "version": "1.0.0",
   "description": "Mesto GHA",
   "main": "index.js",
@@ -13,7 +14,6 @@
     "type": "git",
     "url": "git+https://github.com/kirillchistov/express-mesto-gha.git"
   },
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kirillchistov/express-mesto-gha/issues"
