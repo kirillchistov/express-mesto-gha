@@ -1,14 +1,26 @@
-//  Точка входа  //
+//  Точка входа включает основную логику сервера, запуск и подключение к БД  //
 //  Импортируем express, mongoose и console (для дебаггинга)   //
 const express = require('express');
 const mongoose = require('mongoose');
-const console = require('console');
+//  Импортируем bodyParser для совместимости  //
+const bodyParser = require('body-parser');
+//  Импортируем модуль CORS для поддержки кросс-доменности  //
+const cors = require('cors');
+//  Импортируем роутеры  //
+const users = require('./routes/users');
+const cards = require('./routes/cards');
+//  Импортируем константы с описаниями ошибок  //
+const { NO_DATA_ERROR } = require('./utils/constants');
+//  const MONGO_DB_URL = require('mongodb://localhost:27017/mestodb');  //
 
-//  Задаем порт и адрес подключения к Mongo  //
-const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
+const { PORT = 3000 } = process.env;
 
 const app = express();
-app.use(express.json());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+//  app.use(express.json());  //
 
 //  Делаем временное решение авторизации  //
 //  Вставляем id тестового пользователя  //
@@ -19,16 +31,14 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect(MONGO_URL);
-
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
-
+app.use(users);
+app.use(cards);
 app.use('*', (req, res) => {
-  const err = new Error('Некорректный адрес или метод запроса');
-  return res.status(404).send({ message: err.message });
+  res.status(NO_DATA_ERROR).send({ message: 'Неправильный URL или метод запроса' });
 });
 
+mongoose.connect('mongodb://localhost:27017/mestodb');
+
 app.listen(PORT, () => {
-  console.log(`App successfully started and is listening to port ${PORT}`);
+  console.log(`App is live and is listening to port ${PORT}`);
 });

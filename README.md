@@ -1,27 +1,17 @@
-[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml)
-# Проект Mesto фронтенд + бэкенд
 
+# [Проект Mesto фронтенд + бэкенд](https://github.com/kirillchistov/express-mesto-gha)
+* [Кирилл Чистов](https://github.com/kirillchistov), студент веб-факультета "Я.Практикум" (когорта 47)
 
-
-## Настройка бейджей статуса тестов
-Перед началом работы над проектом рекомендуется исправить бейджи, отражающие статус прохождения тестов.
-Для этого замените разметку бейджей на следующий фрагмент, подставив вместо `${имя_пользователя}` и `${имя_репозитория}` соответствующие значения.
-
-```
-[![Tests for sprint 13](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-13-sprint.yml) 
-
-[![Tests for sprint 14](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-14-sprint.yml)
-```
-
+## Бейджи статуса тестов
+[![Tests](https://github.com/kirillchistov/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/kirillchistov/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests](https://github.com/kirillchistov/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/kirillchistov/express-mesto-gha/actions/workflows/tests-14-sprint.yml)
 
 ## Директории
 
-`/routes` — папка с файлами роутера  
-`/controllers` — папка с файлами контроллеров пользователя и карточки   
-`/models` — папка с файлами описания схем пользователя и карточки  
+* [x] `/routes` — папка с файлами роутера  
+* [x] `/controllers` — папка с файлами контроллеров пользователя и карточки   
+* [x] `/models` — папка с файлами описания схем пользователя и карточки
+* [x] `/utils` - папка с константами и обработкой ошибок
   
-Остальные директории вспомогательные, создаются при необходимости разработчиком
-
 ## Запуск проекта
 
 `npm run start` — запускает сервер   
