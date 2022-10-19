@@ -18,13 +18,15 @@ module.exports.getCards = (req, res) => {
 
 //  Контроллер создания карточки - передаем name, link   //
 module.exports.createCard = (req, res) => {
-//  console.log(req.user._id);  //
-  const creatorId = req.user._id;
+  console.log(req.user._id);
+/*  const creatorId = req.user._id;
   const { name, link } = req.body;
 
   Card.create({ name, link, owner: creatorId })
     .then((card) => res.send({ data: card }))
     .catch((err) => handleErrors(err, res));
+
+*/
 };
 
 //  Контроллер удаления карточки - передаем cardId, запускаем поиск  //
