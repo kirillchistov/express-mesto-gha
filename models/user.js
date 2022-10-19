@@ -4,7 +4,6 @@
 //  avatar — ссылка на аватарку, строка, обязательное поле  //
 //  versionKey - способ поддержки транзакционности / контроля версий  //
 
-
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
