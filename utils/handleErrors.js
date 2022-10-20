@@ -7,16 +7,16 @@ module.exports.handleErrors = (err, res) => {
   if (err.name === 'CastError') {
     return res
       .status(INCORRECT_DATA_ERROR)
-      .send({ message: 'Объект не найден', err });
+      .send({ message: 'Передан некорректный id' });
   }
   if (err.name === 'ValidationError') {
     return res
       .status(INCORRECT_DATA_ERROR)
-      .send({ message: 'Переданы некорректные данные', err });
+      .send({ message: 'Переданы некорректные данные' });
   }
   return res
     .status(DEFAULT_ERROR)
-    .send({ message: 'На сервере произошла ошибка', err });
+    .send({ message: 'На сервере произошла ошибка' });
 };
 
 //  Обработка ошибки  //

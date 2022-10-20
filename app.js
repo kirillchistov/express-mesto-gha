@@ -1,11 +1,14 @@
 //  Точка входа включает основную логику сервера, запуск и подключение к БД  //
-//  Импортируем express, mongoose и console (для дебаггинга)   //
+//  Импортируем express, mongoose   //
 const express = require('express');
 const mongoose = require('mongoose');
-//  Импортируем cors, bodyParser, consoleLogger  //
+//  Импортируем cors, bodyParser, пока не consoleLogger  //
 const cors = require('cors');
 const bodyParser = require('body-parser');
 //  const { consoleLogger } = require('./middlewares/logger');  //
+//  Импортируем express-rate-limit и helmet для безопасности  //
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 //  Импортируем роутеры  //
 const users = require('./routes/users');
 const cards = require('./routes/cards');
@@ -16,13 +19,23 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use(limiter);
+app.use(helmet());
+
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
 //  app.use(consoleLogger);  //
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-app.use(express.json());
+//  app.use(express.json());  //
 
 //  Делаем временное решение авторизации  //
 //  Вставляем id тестового пользователя  //
@@ -40,5 +53,5 @@ app.use('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`App is live and is listening on port ${PORT}`);
+  console.log(`App is live listening on port ${PORT}`);
 });
