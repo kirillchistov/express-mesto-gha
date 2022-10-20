@@ -37,14 +37,8 @@ module.exports.getUser = (req, res) => {
 
 //  Контроллер обновления профиля юзера  - ищем по userId  //
 module.exports.updateProfile = (req, res) => {
-  User.findByIdAndUpdate(
-    req.user._id,
-    req.body.name,
-    req.body.about,
-    {
-      new: true, runValidators: true,
-    },
-  )
+  const { name, about } = req.body;
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.send({ data: user }))
     .catch((err) => handleErrors(err, res));
 };
