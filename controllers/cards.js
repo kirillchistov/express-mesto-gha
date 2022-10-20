@@ -2,7 +2,7 @@
 //  В теле POST-запроса JSON-объект с полями: name и link  //
 
 const Card = require('../models/card');
-const { handleErrors, handleIdErrors } = require('../utils/constants');
+const { handleErrors, handleIdErrors } = require('../utils/handleErrors');
 
 //  Получаем все карточки и получаем к ним данные создателя  //
 module.exports.getCards = (req, res) => {
@@ -19,14 +19,12 @@ module.exports.getCards = (req, res) => {
 //  Контроллер создания карточки - передаем name, link   //
 module.exports.createCard = (req, res) => {
   console.log(req.user._id);
-/*  const creatorId = req.user._id;
+  const creatorId = req.user._id;
   const { name, link } = req.body;
 
   Card.create({ name, link, owner: creatorId })
     .then((card) => res.send({ data: card }))
     .catch((err) => handleErrors(err, res));
-
-*/
 };
 
 //  Контроллер удаления карточки - передаем cardId, запускаем поиск  //
