@@ -1,6 +1,6 @@
 //  Константы для обработки ошибок  //
 //  Перед отправкой проверяем ошибки  //
-const { INCORRECT_DATA_ERROR, NO_DATA_ERROR, DEFAULT_ERROR } = require('./constants');
+const { INCORRECT_DATA_ERROR, UNAUTHORIZED_ERROR, NO_DATA_ERROR, DEFAULT_ERROR } = require('./constants');
 
 //  Ответ с ошибкой должен быть единообразен  //
 module.exports.handleErrors = (err, res) => {

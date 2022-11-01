@@ -6,18 +6,41 @@
 //  PATCH /users/me/avatar - обновляет аватар профиля  //
 
 const router = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
+//  createUser пока не делаем  //
 const {
   getUsers,
-  createUser,
   getUser,
+  getCurrentUser,
   updateProfile,
   updateAvatar,
 } = require('../controllers/users');
+const { URL_REGEXP } = require('../utils/constants');
 
 router.get('/users', getUsers);
-router.post('/users', createUser);
-router.get('/users/:userId', getUser);
-router.patch('/users/me', updateProfile);
-router.patch('/users/me/avatar', updateAvatar);
+router.get('/users/me', getCurrentUser);
+
+router.get('/users/:userId', celebrate({
+  params: Joi.object().keys({
+    id: Joi.string().pattern(/[a-f0-9]/).length(24),
+  }),
+}), getUser);
+
+//  createUser пока не делаем  //
+//  router.post('/users', createUser);  //
+
+router.patch('/users/me', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().pattern(URL_REGEXP),
+  }),
+}), updateProfile);
+
+router.patch('/users/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().pattern(URL_REGEXP),
+  }),
+}), updateAvatar);
 
 module.exports = router;
