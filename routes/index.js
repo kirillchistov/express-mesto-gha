@@ -13,10 +13,8 @@ router.post('/signup', validateUserCreate, createUser);
 router.use('/users', auth, userRouter);
 router.use('/cards', auth, cardsRouter);
 
-/* 
 router.use('*', (req, res, next) => {
   next(new NoDataError('По этому адресу ничего не найдено'));
 });
-*/
 
 module.exports = router;
