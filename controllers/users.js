@@ -11,7 +11,7 @@ const User = require('../models/user');
 // const { ErrorCodes } = require('../utils/errors/error-codes');  //
 const IncorrectDataError = require('../utils/errors/incorrect-data-error');
 const ConflictError = require('../utils/errors/conflict-error');
-// const UnauthorizedError = require('../utils/errors/unauthorized-error'); //
+const UnauthorizedError = require('../utils/errors/unauthorized-error');
 const NoDataError = require('../utils/errors/no-data-error');
 
 // const { handleErrors, handleIdErrors, } = require('../utils/handleErrors');  //
@@ -170,15 +170,17 @@ module.exports.login = (req, res, next) => {
         TOKEN_ENCRYPT_KEY,
         { expiresIn: '7d' },
       );
-      res
-        .cookie('authorization', token, {
-          httpOnly: true,
-          maxAge: 3600000 * 24 * 7,
-          sameSite: true,
-        })
-        .send({ message: 'Авторизация прошла успешно!' });
+      return res.cookie('authorization', token, {
+        httpOnly: true,
+        maxAge: 3600000 * 24 * 7,
+        sameSite: true,
+      }).send({ token });
     })
-    .catch(next);
+    .catch(() => next(new UnauthorizedError('Неверные почта или пароль')));
+};
+
+module.exports.logout = (req, res) => {
+  res.clearCookie('token').send({ message: 'Ваша сессия завершена' });
 };
 
 //  Вариант контроллера с aync await пока не работает  //
