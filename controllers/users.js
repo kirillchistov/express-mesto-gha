@@ -108,6 +108,9 @@ module.exports.createUser = (req, res, next) => {
       if (err.code === 11000) {
         return next(new ConflictError(`${req.body.email} - такой пользователь уже зарегистрирован`));
       }
+      if (err.code === 11000) {
+        return next(new ConflictError(`${req.body.email} - такой пользователь уже зарегистрирован`));
+      }
       return next(err);
     });
 };
@@ -189,7 +192,7 @@ module.exports.login = (req, res, next) => {
       new: true,
       runValidators: true,
     });
-    res.status(ErrorCodes.OK).send({ ...req.body });
+    res.send({ ...req.body });
   } catch (err) {
     next(err);
   }

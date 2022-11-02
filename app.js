@@ -12,13 +12,13 @@ const router = require('./routes');
 //  const users = require('./routes/users');  //
 //  const cards = require('./routes/cards');  //
 //  Импортируем константы с описаниями ошибок  //
-const auth = require('./middlewares/auth');
+//  const auth = require('./middlewares/auth');  //
 const { login, createUser } = require('./controllers/users');
 //  const regex = require('./utils/regex');  //
 //  Нужно приделать еще логирование ошибок, чтобы удобней было разбираться  //
 // const { ErrorCodes } = require('./utils/errors/error-codes');  //
-const NoDataError = require('./utils/errors/no-data-error');
-
+//  const NoDataError = require('./utils/errors/no-data-error');  //
+const UnauthorizedError = require('./utils/errors/unauthorized-error');
 //  const MONGO_DB_URL = require('mongodb://localhost:27017/mestodb');  //
 const {
   PORT = 3000,
@@ -45,14 +45,7 @@ app.use(cookieParser());
 app.use(cors());
 
 //  Удаляем временное решение авторизации  //
-//  Вставляем id тестового пользователя  //
-/* app.use((req, res, next) => {
-  req.user = {
-    _id: '634bafa09c56ed6016ec80c2',
-  };
-  next();
-});
-*/
+//  _id: '634bafa09c56ed6016ec80c2'  //
 
 app.post('/signin', login);
 app.post('/signup', createUser);
@@ -78,11 +71,10 @@ app.post('/signup', celebrate({
 //  app.use('/', auth, router);  //
 app.use('/', router);
 
-/*
+//  при неавторизованном доступе кроме signup и signin возвращаем 401  //
 app.use('*', (req, res, next) => {
-  next(new NoDataError(`По адресу ${req.baseUrl} ничего не нашлось`));
+  next(new UnauthorizedError(`Доступ по адресу ${req.baseUrl} требует авторизации`));
 });
-*/
 
 app.listen(PORT, () => {
 //  console.log(`App is live listening on port ${PORT}`);  //
