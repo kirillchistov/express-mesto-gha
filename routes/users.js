@@ -17,8 +17,8 @@ const {
 } = require('../controllers/users');
 const { URL_REGEXP } = require('../utils/constants');
 
-router.get('/users', getUsers);
-router.get('/users/me', getCurrentUser);
+router.get('/', getUsers);
+router.get('/me', getCurrentUser);
 
 router.get('/users/:userId', celebrate({
   params: Joi.object().keys({

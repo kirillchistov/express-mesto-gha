@@ -1,9 +1,4 @@
 //  Поля схемы карточки:  //
-//  name — имя карточки, строка 2-30, обязательное  //
-//  link — ссылка на картинку, строка, обязательное  //
-//  owner — ссылка на модель автора карточки, тип ObjectId, обязательное  //
-//  likes — список лайкнувших пост пользователей, массив ObjectId, по умолчанию = []  //
-//  createdAt — дата создания, Date, по умолчанию = Date.now  //
 //  versionKey - способ поддержки транзакционности / контроля версий  //
 
 const mongoose = require('mongoose');
@@ -19,12 +14,7 @@ const cardSchema = new mongoose.Schema({
   link: {
     type: String,
     required: true,
-    validate: {
-      validator(link) {
-        return validator.isURL(link) === true;
-      },
-      message: 'Указан некорректный URL иллюстрации места',
-    },
+    validate: validator.isURL,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

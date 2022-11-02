@@ -1,12 +1,8 @@
-//  Точка входа включает основную логику сервера, запуск и подключение к БД  //
-//  Импортируем express, mongoose   //
 const express = require('express');
 const mongoose = require('mongoose');
-//  Импортируем cors, bodyParser, пока не consoleLogger  //
 const cors = require('cors');
 const bodyParser = require('body-parser');
 //  const { consoleLogger } = require('./middlewares/logger');  //
-//  Импортируем express-rate-limit и helmet для безопасности  //
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
@@ -77,5 +73,5 @@ app.use('*', (req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`App is live listening on port ${PORT}`);
+//  console.log(`App is live listening on port ${PORT}`);  //
 });

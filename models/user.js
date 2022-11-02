@@ -1,18 +1,15 @@
 //  Поля схемы пользователя  //
-//  name — имя, строка 2-30, не-обязательное, default  //
-//  about — информация о, строка 2-30, не-обязательное, default  //
-//  avatar — ссылка на аватар, строка, не-обязательное, default, валидация URL  //
-//  versionKey - поддержка транзакционности / контроль версий  //
-//  validator - модуль валидации, здесь пока только /lib/isEmail  //
 //  bcrypt - для хеширования и сверки пароля  //
-//  REGEX_URL - рег.выражение для валидации ссылки на аватар  //
+//  UNAUTHORIZED_ERROR - класс ошибок авторизации  //
 
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
+const { ErrorCodes } = require('../utils/errors/error-codes');
 //  const { REGEX_URL } = require('../utils/constants');  //
 
 //  14.1 Добавляем в схему пользователя уник. email и пароль  //
+//  14.1 validator - модуль валидации для email и avatar url  //
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -29,21 +26,13 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
-    validate: {
-      validator(url) {
-        return validator.isURL(url) === true;
-      },
-      message: 'Указан некорректный URL аватарки',
-    },
+    validate: validator.isURL,
   },
   email: {
-    type: mongoose.Schema.Types.String,
+    type: String,
     required: true,
     unique: true,
-    validate: {
-      validator: (v) => validator.isEmail(v),
-      message: 'Адрес электронной почты введен не корректно',
-    },
+    validate: validator.isEmail,
   },
   password: {
     type: String,
@@ -59,11 +48,11 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(email,
   return this.findOne({ email })
     .select('+password')
     .then((user) => {
-      if (!user) { return Promise.reject(new Error('Неправильная почта или пароль')); }
+      if (!user) { return Promise.reject(new ErrorCodes.UNAUTHORIZED_ERROR('Неправильная почта или пароль')); }
       //  throw new UnauthorizedError('Неправильная почта, пароль или токен');  //
       return bcrypt.compare(password, user.password)
         .then((matched) => {
-          if (!matched) { return Promise.reject(new Error('Неправильная почта или пароль')); }
+          if (!matched) { return Promise.reject(new ErrorCodes.UNAUTHORIZED_ERROR('Неправильная почта или пароль')); }
           //  throw new UnauthorizedError('Неправильная почта, пароль или токен');  //
           return user;
         });
