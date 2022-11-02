@@ -102,11 +102,8 @@ module.exports.createUser = (req, res, next) => {
       res.send(newUser);
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
+      if (err.name === 'ValidationError') {
         return next(new IncorrectDataError('Переданы некорректные данные'));
-      }
-      if (err.code === 11000) {
-        return next(new ConflictError(`${req.body.email} - такой пользователь уже зарегистрирован`));
       }
       if (err.code === 11000) {
         return next(new ConflictError(`${req.body.email} - такой пользователь уже зарегистрирован`));

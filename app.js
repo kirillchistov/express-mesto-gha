@@ -18,7 +18,7 @@ const { login, createUser } = require('./controllers/users');
 //  Нужно приделать еще логирование ошибок, чтобы удобней было разбираться  //
 // const { ErrorCodes } = require('./utils/errors/error-codes');  //
 //  const NoDataError = require('./utils/errors/no-data-error');  //
-const UnauthorizedError = require('./utils/errors/unauthorized-error');
+//  const UnauthorizedError = require('./utils/errors/unauthorized-error');  //
 //  const MONGO_DB_URL = require('mongodb://localhost:27017/mestodb');  //
 const {
   PORT = 3000,
@@ -72,9 +72,10 @@ app.post('/signup', celebrate({
 app.use('/', router);
 
 //  при неавторизованном доступе кроме signup и signin возвращаем 401  //
-app.use('*', (req, res, next) => {
+/* app.use('*', (req, res, next) => {
   next(new UnauthorizedError(`Доступ по адресу ${req.baseUrl} требует авторизации`));
 });
+*/
 
 app.listen(PORT, () => {
 //  console.log(`App is live listening on port ${PORT}`);  //
