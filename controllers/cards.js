@@ -3,13 +3,18 @@
 
 const Card = require('../models/card');
 //  const { handleErrors, handleIdErrors } = require('../utils/handleErrors');  //
-const { ErrorCodes } = require('../utils/errors/error-codes');
+//  const { ErrorCodes } = require('../utils/errors/error-codes');  //
+//  const IncorrectDataError = require('../utils/errors/incorrect-data-error');  //
+//  const ConflictError = require('../utils/errors/conflict-error');  //
+// const UnauthorizedError = require('../utils/errors/unauthorized-error'); //
+const ForbiddenError = require('../utils/errors/forbidden-error');
+const NoDataError = require('../utils/errors/no-data-error');
 
 //  Получаем все карточки   //
 module.exports.getCards = async (req, res, next) => {
   try {
     const cards = await Card.find({});
-    res.status(ErrorCodes.OK).send({ data: cards });
+    res.send({ data: cards });
   } catch (err) {
     next(err);
   }
@@ -24,7 +29,7 @@ module.exports.createCard = async (req, res, next) => {
     const creatorId = req.user._id;
     const { name, link } = req.body;
     const card = await Card.create({ name, link, owner: creatorId });
-    res.status(ErrorCodes.OK).send({ data: card });
+    res.send({ data: card });
   } catch (err) {
     next(err);
   }
@@ -36,14 +41,14 @@ module.exports.deleteCard = async (req, res, next) => {
   try {
     const card = await Card.findByIdAndRemove(req.params.cardId);
     if (!card) {
-      next(new ErrorCodes.NO_DATA_ERROR(`Карточка с id ${req.params.cardId} не найдена`));
+      next(new NoDataError(`Карточка с id ${req.params.cardId} не найдена`));
       return;
     } if (card.owner.toHexString() !== req.user._id) {
-      next(new ErrorCodes.FORBIDDEN_ERROR('Карточку другого пользователя удалить нельзя'));
+      next(new ForbiddenError('Карточку другого пользователя удалить нельзя'));
       return;
     }
     await card.delete();
-    res.status(ErrorCodes.OK).send({ message: `Карточка с id ${req.params.cardId} удалена` });
+    res.send({ message: `Карточка с id ${req.params.cardId} удалена` });
   } catch (err) {
     next(err);
   }
@@ -60,10 +65,10 @@ module.exports.likeCard = async (req, res, next) => {
       { new: true },
     );
     if (!card) {
-      next(new ErrorCodes.NO_DATA_ERROR(`Карточка с id ${req.params.cardId} не найдена`));
+      next(new NoDataError(`Карточка с id ${req.params.cardId} не найдена`));
       return;
     }
-    res.status(ErrorCodes.OK).send({ message: 'Лайк добавлен' });
+    res.send({ message: 'Лайк добавлен' });
   } catch (err) {
     next(err);
   }
@@ -82,10 +87,10 @@ module.exports.dislikeCard = async (req, res, next) => {
       { new: true },
     );
     if (card === null) {
-      next(new ErrorCodes.NO_DATA_ERROR(`Карточка с id ${req.params.cardId} не найдена`));
+      next(new NoDataError(`Карточка с id ${req.params.cardId} не найдена`));
       return;
     }
-    res.status(ErrorCodes.OK).send({ message: 'Лайк удален' });
+    res.send({ message: 'Лайк удален' });
   } catch (err) {
     next(err);
   }

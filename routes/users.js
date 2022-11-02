@@ -15,31 +15,30 @@ const {
   updateProfile,
   updateAvatar,
 } = require('../controllers/users');
-const { URL_REGEXP } = require('../utils/constants');
+const regex = require('../utils/regex');
 
 router.get('/', getUsers);
 router.get('/me', getCurrentUser);
 
-router.get('/users/:userId', celebrate({
+router.get('/:userId', celebrate({
   params: Joi.object().keys({
-    id: Joi.string().pattern(/[a-f0-9]/).length(24),
+    userId: Joi.string().hex().length(24),
   }),
 }), getUser);
 
 //  createUser пока не делаем  //
 //  router.post('/users', createUser);  //
 
-router.patch('/users/me', celebrate({
+router.patch('/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(URL_REGEXP),
   }),
 }), updateProfile);
 
-router.patch('/users/me/avatar', celebrate({
+router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().pattern(URL_REGEXP),
+    avatar: Joi.string().regex(regex),
   }),
 }), updateAvatar);
 

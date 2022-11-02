@@ -6,4 +6,4 @@ class NoDataError extends Error {
   }
 }
 
-module.exports = { NoDataError };
+module.exports = NoDataError;

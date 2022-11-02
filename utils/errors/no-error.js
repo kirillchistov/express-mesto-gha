@@ -1,9 +1,9 @@
 //  Класс ошибки для кейса 409: регистрация с email, который есть в базе  //
-class ConflictError extends Error {
+class NoError extends Error {
   constructor(message) {
     super(message);
-    this.statusCode = 409;
+    this.statusCode = 200;
   }
 }
 
-module.exports = ConflictError;
+module.exports = NoError;

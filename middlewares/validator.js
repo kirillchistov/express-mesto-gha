@@ -1,6 +1,7 @@
 //  Миддлвер для валидации юзеров, карточек, URL  //
 
 const { celebrate, Joi } = require('celebrate');
+const regex = require('../utils/regex');
 
 module.exports.validateUserId = celebrate({
   params: Joi.object().keys({
@@ -17,7 +18,7 @@ module.exports.validateUpdateUser = celebrate({
 
 module.exports.validateUpdateAvatar = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().pattern(/https?:\/\/(\w{3}\.)?[1-9a-z\-.]{1,}\w\w(\/[1-90a-z.,_@%&?+=~/-]{1,}\/?)?#?/i),
+    avatar: Joi.string().required().regex(regex),
   }),
 });
 
@@ -34,14 +35,14 @@ module.exports.validateCreateUser = celebrate({
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(/https?:\/\/(\w{3}\.)?[1-9a-z\-.]{1,}\w\w(\/[1-90a-z.,_@%&?+=~/-]{1,}\/?)?#?/i),
+    avatar: Joi.string().regex(regex),
   }),
 });
 
 module.exports.validateCreateCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().pattern(/https?:\/\/(\w{3}\.)?[1-9a-z\-.]{1,}\w\w(\/[1-90a-z.,_@%&?+=~/-]{1,}\/?)?#?/i),
+    link: Joi.string().required().regex(regex),
   }),
 });
 

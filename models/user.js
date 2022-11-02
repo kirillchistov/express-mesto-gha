@@ -1,11 +1,11 @@
 //  Поля схемы пользователя  //
 //  bcrypt - для хеширования и сверки пароля  //
-//  UNAUTHORIZED_ERROR - класс ошибок авторизации  //
 
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
-const { ErrorCodes } = require('../utils/errors/error-codes');
+const UnauthorizedError = require('../utils/errors/unauthorized-error');
+
 //  const { REGEX_URL } = require('../utils/constants');  //
 
 //  14.1 Добавляем в схему пользователя уник. email и пароль  //
@@ -48,12 +48,10 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(email,
   return this.findOne({ email })
     .select('+password')
     .then((user) => {
-      if (!user) { return Promise.reject(new ErrorCodes.UNAUTHORIZED_ERROR('Неправильная почта или пароль')); }
-      //  throw new UnauthorizedError('Неправильная почта, пароль или токен');  //
+      if (!user) { return Promise.reject(new UnauthorizedError('Неправильная почта или пароль')); }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
-          if (!matched) { return Promise.reject(new ErrorCodes.UNAUTHORIZED_ERROR('Неправильная почта или пароль')); }
-          //  throw new UnauthorizedError('Неправильная почта, пароль или токен');  //
+          if (!matched) { return Promise.reject(new UnauthorizedError('Неправильная почта или пароль')); }
           return user;
         });
     });
