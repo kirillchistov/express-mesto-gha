@@ -90,7 +90,7 @@ module.exports.createUser = (req, res, next) => {
     password,
   } = req.body;
 
-  bcrypt.hash(password, 17)
+  bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name,
       about,
@@ -98,8 +98,9 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((newUser) => {
-      res.send(newUser);
+    .then((user) => {
+      const { password: p, ...data } = JSON.parse(JSON.stringify(user));
+      res.send({ data });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {

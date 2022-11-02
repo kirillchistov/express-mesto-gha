@@ -10,11 +10,12 @@ const { validateLogin, validateUserCreate } = require('../middlewares/validate-u
 router.post('/signin', validateLogin, login);
 router.post('/signup', validateUserCreate, createUser);
 
-router.use('/users', auth, userRouter);
-router.use('/cards', auth, cardsRouter);
+router.use(auth);
+router.use('/users', userRouter);
+router.use('/cards', cardsRouter);
 
 /*
-router.use('*', (req, res, next) => {
+router.use((req, res, next) => {
   next(new NoDataError('По этому адресу ничего не найдено'));
 });
 */
