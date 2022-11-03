@@ -175,7 +175,7 @@ module.exports.login = (req, res, next) => {
         httpOnly: true,
         maxAge: 3600000 * 24 * 7,
         sameSite: true,
-      }).send({ email });
+      }).send({ token });
     })
     .catch(() => next(new UnauthorizedError('Неверные почта или пароль')));
 };
