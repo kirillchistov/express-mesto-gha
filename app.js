@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bodyParser = require('body-parser');
+//  bodyParser заменили на встроенный express.json  //
+//  const bodyParser = require('body-parser');  //
 //  const { consoleLogger } = require('./middlewares/logger');  //
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -39,8 +40,9 @@ app.use(helmet());
 
 mongoose.connect(MONGO_DB_URL);
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+//  app.use(bodyParser.json());  //
+//  app.use(bodyParser.urlencoded({ extended: true }));  //
+app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
