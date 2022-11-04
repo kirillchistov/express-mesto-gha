@@ -16,7 +16,7 @@ const router = require('./routes');
 //  const cards = require('./routes/cards');  //
 //  Импортируем константы с описаниями ошибок  //
 //  const auth = require('./middlewares/auth');  //
-const { login, createUser } = require('./controllers/users');
+const { login, createUser, logout } = require('./controllers/users');
 //  const regex = require('./utils/regex');  //
 //  Нужно приделать еще логирование ошибок, чтобы удобней было разбираться  //
 // const { ErrorCodes } = require('./utils/errors/error-codes');  //
@@ -54,6 +54,7 @@ app.use(cors());
 
 app.post('/signin', login);
 app.post('/signup', createUser);
+app.post('/signout', logout);
 
 /* app.post('/signin', celebrate({
   body: Joi.object().keys({

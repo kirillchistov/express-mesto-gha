@@ -97,7 +97,7 @@ module.exports.createUser = (req, res, next) => {
     }))
     .then((user) => {
       const { password: p, ...data } = JSON.parse(JSON.stringify(user));
-      res.send({ data });
+      res.status(200).send({ data });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -178,11 +178,10 @@ module.exports.login = (req, res, next) => {
 };
 
 //  Контроллер логаута пока не используем  //
-/*
+
 module.exports.logout = (req, res) => {
   res.clearCookie('token').send({ message: 'Ваша сессия завершена' });
 };
-*/
 
 //  Вариант контроллера с aync await пока не работает  //
 /* module.exports.updateAvatar = async (req, res, next) => {
