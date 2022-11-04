@@ -77,12 +77,6 @@ app.post('/signup', celebrate({
 //  app.use('/', auth, router);  //
 app.use('/', router);
 
-//  при неавторизованном доступе кроме signup и signin возвращаем 401  //
-/* app.use('*', (req, res, next) => {
-  next(new UnauthorizedError(`Доступ по адресу ${req.baseUrl} требует авторизации`));
-});
-*/
-
 app.listen(PORT, () => {
 //  console.log(`App is live listening on port ${PORT}`);  //
 });
