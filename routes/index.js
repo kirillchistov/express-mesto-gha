@@ -16,7 +16,7 @@ router.use(auth);
 router.use('/users', userRouter);
 router.use('/cards', cardsRouter);
 router.use('/signout', logout);
-router.use('*', (req, res, next) => next(new NoDataError('index 404')));
+router.use('*', (req, res, next) => next(new NoDataError('index 404: по этому адресу ничего не найдено')));
 router.use((req, res, next) => {
   next(new UnauthorizedError('index 401: Для доступа требуется авторизация'));
 });
