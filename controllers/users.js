@@ -95,18 +95,19 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((user) => {
-      const { password: p, ...data } = JSON.parse(JSON.stringify(user));
-      res.status(200).send({ data });
-    })
+    .then(() => res.status(200).send({ 
+      data: {
+        name, about, avatar, email,
+      },
+    }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new IncorrectDataError('ctrl users 400: Переданы некорректные данные'));
+        next(new IncorrectDataError('ctrl users 400: Переданы некорректные данные'));
+      } else if (err.code === 11000) {
+        next(new ConflictError(`ctrl users 409: ${req.body.email} - такой пользователь уже зарегистрирован`));
+      } else {
+        next(err);
       }
-      if (err.code === 11000) {
-        return next(new ConflictError(`ctrl users 409: ${req.body.email} - такой пользователь уже зарегистрирован`));
-      }
-      return next(err);
     });
 };
 
