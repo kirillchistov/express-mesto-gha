@@ -9,7 +9,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-//  const { celebrate, Joi } = require('celebrate');  //
+const { errors } = require('celebrate');
 //  Импортируем все роутеры  //
 const router = require('./routes');
 //  const users = require('./routes/users');  //
@@ -56,6 +56,7 @@ app.post('/signout', logout);
 
 app.use('/', auth, router);
 //  app.use('/', router);  //
+app.use(errors());
 app.use(handleErrors);
 
 app.listen(PORT, () => {
