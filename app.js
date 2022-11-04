@@ -15,8 +15,9 @@ const router = require('./routes');
 //  const users = require('./routes/users');  //
 //  const cards = require('./routes/cards');  //
 //  Импортируем константы с описаниями ошибок  //
-//  const auth = require('./middlewares/auth');  //
+const auth = require('./middlewares/auth');
 const { login, createUser, logout } = require('./controllers/users');
+const handleErrors = require('./utils/handleErrors');
 //  const regex = require('./utils/regex');  //
 //  Нужно приделать еще логирование ошибок, чтобы удобней было разбираться  //
 // const { ErrorCodes } = require('./utils/errors/error-codes');  //
@@ -42,9 +43,6 @@ app.use(helmet());
 
 mongoose.connect(MONGO_DB_URL);
 
-//  Заменили bodyParser.json на express.json  //
-//  app.use(bodyParser.json());  //
-//  app.use(bodyParser.urlencoded({ extended: true }));  //
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
@@ -56,26 +54,9 @@ app.post('/signin', login);
 app.post('/signup', createUser);
 app.post('/signout', logout);
 
-/* app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().regex(regexEmail).required().email(),
-    password: Joi.string().regex(regexPass).required().min(8),
-  }),
-}), login);
-
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(regexUrl),
-    email: Joi.string().required().email(),
-    password: Joi.string().regex(regexPass).required().min(8),
-  }),
-}), createUser);
-*/
-
-//  app.use('/', auth, router);  //
-app.use('/', router);
+app.use('/', auth, router);
+//  app.use('/', router);  //
+app.use(handleErrors);
 
 app.listen(PORT, () => {
 //  console.log(`App is live listening on port ${PORT}`);  //
