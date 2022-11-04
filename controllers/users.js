@@ -1,9 +1,6 @@
-//  3 роута: GET /users, GET /users/:userId, POST /users  //
-//  14.2: добавляем email и password с хешированием  //
-//  В теле POST-запроса JSON-объект с полями: name, about и avatar  //
-//  Импортируем bcrypt для хеширования пароля и jsonwetoken  //
+//  14.2 добавляем email и password с хешированием  //
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { TOKEN_ENCRYPT_KEY } = require('../utils/constants');
 
@@ -180,9 +177,12 @@ module.exports.login = (req, res, next) => {
     .catch(() => next(new UnauthorizedError('Неверные почта или пароль')));
 };
 
+//  Контроллер логаута пока не используем  //
+/*
 module.exports.logout = (req, res) => {
   res.clearCookie('token').send({ message: 'Ваша сессия завершена' });
 };
+*/
 
 //  Вариант контроллера с aync await пока не работает  //
 /* module.exports.updateAvatar = async (req, res, next) => {

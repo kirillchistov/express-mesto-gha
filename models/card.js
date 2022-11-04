@@ -1,6 +1,5 @@
 //  Поля схемы карточки:  //
-//  versionKey - способ поддержки транзакционности / контроля версий  //
-
+//  Добавляем валидацию ссылки  //
 const mongoose = require('mongoose');
 const validator = require('validator');
 
@@ -14,9 +13,11 @@ const cardSchema = new mongoose.Schema({
   link: {
     type: String,
     required: true,
-    validate: {
-      validator: (v) => validator.isURL(v),
-      message: 'Некорректный адрес ссылки на картинку',
+    validate: (v) => {
+      if (validator.isURL(v)) {
+        return true;
+      }
+      return false;
     },
   },
   owner: {

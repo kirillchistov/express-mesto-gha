@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 //  bodyParser заменили на встроенный express.json  //
 //  const bodyParser = require('body-parser');  //
+//  logger и dotenv (для хранения ключа) пока не используем  //
 //  const { consoleLogger } = require('./middlewares/logger');  //
+//  const dotenv = require('dotenv').config();  //
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
@@ -40,6 +42,7 @@ app.use(helmet());
 
 mongoose.connect(MONGO_DB_URL);
 
+//  Заменили bodyParser.json на express.json  //
 //  app.use(bodyParser.json());  //
 //  app.use(bodyParser.urlencoded({ extended: true }));  //
 app.use(express.json());
