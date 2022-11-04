@@ -15,8 +15,8 @@ const router = require('./routes');
 //  const users = require('./routes/users');  //
 //  const cards = require('./routes/cards');  //
 //  Импортируем константы с описаниями ошибок  //
-const auth = require('./middlewares/auth');
-const { login, createUser, logout } = require('./controllers/users');
+//  const auth = require('./middlewares/auth');  //
+//  const { login, createUser, logout } = require('./controllers/users');  //
 const handleErrors = require('./utils/handleErrors');
 //  const regex = require('./utils/regex');  //
 //  Нужно приделать еще логирование ошибок, чтобы удобней было разбираться  //
