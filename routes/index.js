@@ -8,7 +8,6 @@ const { validateLogin, validateUserCreate } = require('../middlewares/validate-u
 //  const NoDataError = require('../utils/errors/no-data-error');  //
 const UnauthorizedError = require('../utils/errors/unauthorized-error');
 
-
 router.post('/signin', validateLogin, login);
 router.post('/signup', validateUserCreate, createUser);
 
