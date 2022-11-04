@@ -30,10 +30,10 @@ module.exports.getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
-      next(new NoDataError(`Пользователь с id ${req.params.userId} не найден`));
+      next(new NoDataError(`ctrl users 404: Пользователь с id ${req.params.userId} не найден`));
       return;
     }
-    res.send(user);
+    res.status(200).send(user);
   } catch (err) {
     next(err);
   }
@@ -44,7 +44,7 @@ module.exports.getCurrentUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user) {
-      next(new NoDataError(`Пользователь с id ${req.params.userId} не найден`));
+      next(new NoDataError(`ctrl users 404: Пользователь с id ${req.params.userId} не найден`));
       return;
     }
     res.send(user);
@@ -101,10 +101,10 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new IncorrectDataError('Переданы некорректные данные'));
+        return next(new IncorrectDataError('ctrl users 400: Переданы некорректные данные'));
       }
       if (err.code === 11000) {
-        return next(new ConflictError(`${req.body.email} - такой пользователь уже зарегистрирован`));
+        return next(new ConflictError(`ctrl users 409: ${req.body.email} - такой пользователь уже зарегистрирован`));
       }
       return next(err);
     });
@@ -129,13 +129,13 @@ module.exports.updateProfile = (req, res, next) => {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
-    .orFail(new NoDataError(`Пользователь с id: ${req.params.userId} не найден`))
+    .orFail(new NoDataError(`ctrl users 404: Пользователь с id: ${req.params.userId} не найден`))
     .then((updatedUser) => {
       res.send(updatedUser);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        return next(new IncorrectDataError('Переданы некорректные данные'));
+        return next(new IncorrectDataError('ctrl users 400: Переданы некорректные данные'));
       }
       return next(err);
     });
@@ -146,13 +146,13 @@ module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
-    .orFail(new NoDataError(`Пользователь с id: ${req.params.userId} не найден`))
+    .orFail(new NoDataError(`ctrl users 404: Пользователь с id: ${req.params.userId} не найден`))
     .then((updatedUser) => {
       res.send(updatedUser);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        return next(new IncorrectDataError('Переданы некорректные данные'));
+        return next(new IncorrectDataError('ctrl users 400: Переданы некорректные данные'));
       }
       return next(err);
     });
@@ -174,7 +174,7 @@ module.exports.login = (req, res, next) => {
         sameSite: true,
       }).send({ token });
     })
-    .catch(() => next(new UnauthorizedError('Неверные почта или пароль')));
+    .catch(() => next(new UnauthorizedError('ctrl users 401: Неверные почта или пароль')));
 };
 
 //  Контроллер логаута пока не используем  //

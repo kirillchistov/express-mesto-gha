@@ -6,7 +6,7 @@ const auth = (req, res, next) => {
   const { authorization } = req.cookies;
 
   if (!authorization) {
-    throw new UnauthorizedError('Необходима авторизация');
+    throw new UnauthorizedError('auth 401: Необходима авторизация');
   }
 
   const token = authorization.replace('Bearer', '');
@@ -15,7 +15,7 @@ const auth = (req, res, next) => {
   try {
     payload = jwt.verify(token, TOKEN_ENCRYPT_KEY);
   } catch (err) {
-    next(new UnauthorizedError('Необходима авторизация'));
+    next(new UnauthorizedError('auth 401: Необходима авторизация'));
   }
 
   req.user = payload;
