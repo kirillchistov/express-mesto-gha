@@ -50,11 +50,7 @@ app.use(cors());
 //  Удаляем временное решение авторизации  //
 //  _id: '634bafa09c56ed6016ec80c2'  //
 
-app.post('/signin', login);
-app.post('/signup', createUser);
-app.post('/signout', logout);
-
-app.use('/', auth, router);
+app.use('/', router);
 //  app.use('/', router);  //
 app.use(errors());
 app.use(handleErrors);
