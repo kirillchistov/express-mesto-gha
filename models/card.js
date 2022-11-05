@@ -1,5 +1,4 @@
 //  Поля схемы карточки:  //
-//  Добавляем валидацию ссылки  //
 const mongoose = require('mongoose');
 const validator = require('validator');
 

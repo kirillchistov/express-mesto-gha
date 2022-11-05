@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const UnauthorizedError = require('../utils/errors/unauthorized-error');
-//  14.1 Добавляем в схему пользователя уник. email и пароль  //
-//  14.1 Добавляем валидацию email и avatar через validator  //
+//  14 Добавляем уник. email и пароль, валидируем email и avatar  //
 const userSchema = new mongoose.Schema({
   name: {
     type: String,

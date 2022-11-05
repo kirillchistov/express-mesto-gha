@@ -1,12 +1,5 @@
-//  Реализуйте роуты для пользователей  //
-//  GET /users — возвращает всех пользователей  //
-//  POST /users — создаёт пользователя  //
-//  GET /users/:userId - возвращает пользователя по _id  //
-//  PATCH /users/me - обновляет данные профиля  //
-//  PATCH /users/me/avatar - обновляет аватар профиля  //
-
+//  Роуты для пользователей  //
 const router = require('express').Router();
-
 const {
   getUsers,
   getUser,
@@ -14,14 +7,6 @@ const {
   updateProfile,
   updateAvatar,
 } = require('../controllers/users');
-
-//  createUser пока не делаем  //
-//  router.post('/users', createUser);  //
-
-//  выносим валидацию юзеров в middleware  //
-//  const regex = require('../utils/regex');
-//  const { celebrate, Joi } = require('celebrate');  //
-
 const { validateUserId, validateProfileUpdate, validateAvatar } = require('../middlewares/validate-user');
 
 router.get('/me', getCurrentUser);

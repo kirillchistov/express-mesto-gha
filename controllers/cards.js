@@ -13,6 +13,7 @@ module.exports.getCards = async (req, res, next) => {
   }
 };
 
+//  Создаем карточку   //
 module.exports.createCard = async (req, res, next) => {
   try {
     const creatorId = req.user._id;
@@ -24,6 +25,7 @@ module.exports.createCard = async (req, res, next) => {
   }
 };
 
+//  Удаляем карточку с проверкой свой/чужой   //
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
@@ -39,14 +41,14 @@ module.exports.deleteCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new IncorrectDataError(`400: переданы некорректные данные для удаления карточки с id ${req.params.cardId}`));
+        next(new IncorrectDataError(`Переданы некорректные данные для удаления карточки с id ${req.params.cardId}`));
       } else {
         next(err);
       }
     });
 };
 
-//  Если нет карточки с таким id, обрабатываем ошибку экземпляром класса 404   //
+//  Ставим лайк. Если нет карточки с таким id, отвечаем 404   //
 module.exports.likeCard = async (req, res, next) => {
   try {
     const card = await Card.findByIdAndUpdate(
@@ -64,8 +66,7 @@ module.exports.likeCard = async (req, res, next) => {
   }
 };
 
-//  Если у карточки с таким id лайков нет, удаляем _id из массива  //
-//  Если нет карточки с таким id, обрабатываем ошибку (экземпляр класса 404)   //
+//  Минусаем лайк. Если у карточки лайков нет, удаляем _id из массива  //
 module.exports.dislikeCard = async (req, res, next) => {
   try {
     const card = await Card.findByIdAndUpdate(

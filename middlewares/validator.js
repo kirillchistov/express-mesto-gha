@@ -1,6 +1,4 @@
 //  Миддлвер для валидации юзеров, карточек, URL  //
-//  Разбили этот один на несколько отдельных для юзеров и карточек  //
-
 const { celebrate, Joi } = require('celebrate');
 const regex = require('../utils/regex');
 

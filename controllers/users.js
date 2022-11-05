@@ -6,10 +6,7 @@ const { TOKEN_ENCRYPT_KEY } = require('../utils/constants');
 const User = require('../models/user');
 const IncorrectDataError = require('../utils/errors/incorrect-data-error');
 const ConflictError = require('../utils/errors/conflict-error');
-//  const UnauthorizedError = require('../utils/errors/unauthorized-error');  //
 const NoDataError = require('../utils/errors/no-data-error');
-
-// const { handleErrors, handleIdErrors, } = require('../utils/handleErrors');  //
 
 //  Получаем всех пользователей  //
 module.exports.getUsers = async (req, res, next) => {
@@ -26,7 +23,7 @@ module.exports.getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
-      next(new NoDataError(`ctrl users 404: Пользователь с id ${req.params.userId} не найден`));
+      next(new NoDataError(`Пользователь с id ${req.params.userId} не найден`));
       return;
     }
     res.status(200).send(user);
@@ -40,7 +37,7 @@ module.exports.getCurrentUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user) {
-      next(new NoDataError(`ctrl users 404: Пользователь с id ${req.params.userId} не найден`));
+      next(new NoDataError(`Пользователь с id ${req.params.userId} не найден`));
       return;
     }
     res.send(user);
@@ -74,9 +71,9 @@ module.exports.createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new IncorrectDataError('ctrl users 400: Переданы некорректные данные'));
+        next(new IncorrectDataError('Переданы некорректные данные'));
       } else if (err.code === 11000) {
-        next(new ConflictError(`ctrl users 409: ${req.body.email} - такой пользователь уже зарегистрирован`));
+        next(new ConflictError(`${req.body.email} - такой пользователь уже зарегистрирован`));
       } else {
         next(err);
       }
@@ -89,13 +86,13 @@ module.exports.updateProfile = (req, res, next) => {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
-    .orFail(new NoDataError(`ctrl users 404: Пользователь с id: ${req.params.userId} не найден`))
+    .orFail(new NoDataError(`Пользователь с id: ${req.params.userId} не найден`))
     .then((updatedUser) => {
       res.send(updatedUser);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        return next(new IncorrectDataError('ctrl users 400: Переданы некорректные данные'));
+        return next(new IncorrectDataError('Переданы некорректные данные'));
       }
       return next(err);
     });
@@ -107,13 +104,13 @@ module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
-    .orFail(new NoDataError(`ctrl users 404: Пользователь с id: ${req.params.userId} не найден`))
+    .orFail(new NoDataError(`Пользователь с id: ${req.params.userId} не найден`))
     .then((updatedUser) => {
       res.status(200).send(updatedUser);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        return next(new IncorrectDataError('ctrl users 400: Переданы некорректные данные'));
+        return next(new IncorrectDataError('Переданы некорректные данные'));
       }
       return next(err);
     });
