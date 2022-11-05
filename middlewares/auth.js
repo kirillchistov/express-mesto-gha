@@ -14,12 +14,15 @@ const auth = (req, res, next) => {
 
   try {
     payload = jwt.verify(token, TOKEN_ENCRYPT_KEY);
+    if (!payload) {
+      return next(new UnauthorizedError('Необходимы права доступа'));
+    }
   } catch (err) {
-    next(new UnauthorizedError('Необходима авторизация'));
+    throw next(new UnauthorizedError('Необходима авторизация'));
   }
-
   req.user = payload;
-  return next();
+
+  next();
 };
 
 module.exports = auth;
