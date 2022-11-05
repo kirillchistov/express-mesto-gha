@@ -6,7 +6,7 @@ const auth = (req, res, next) => {
   const { authorization } = req.cookies;
 
   if (!authorization) {
-    throw new UnauthorizedError('Необходима авторизация');
+    return next(new UnauthorizedError('Необходима авторизация'));
   }
 
   const token = authorization.replace('Bearer', '');
@@ -18,11 +18,11 @@ const auth = (req, res, next) => {
       return next(new UnauthorizedError('Необходимы права доступа'));
     }
   } catch (err) {
-    throw next(new UnauthorizedError('Необходима авторизация'));
+    return next(new UnauthorizedError('Необходима авторизация'));
   }
   req.user = payload;
 
-  next();
+  return next();
 };
 
 module.exports = auth;
