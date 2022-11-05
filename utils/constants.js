@@ -18,10 +18,3 @@ module.exports = {
 //  ключик пока держим здесь  //
 
 module.exports.TOKEN_ENCRYPT_KEY = '7f4efea4d68fc1c806f72ba452efd8106b6a0cb48f523ee4332ebe70a704274f';
-
-//  REGEX также выносим в отдельный файл ./regex
-/*
-module.exports.USER_ID_REGEX = /[a-f0-9]/;
-module.exports.CARD_ID_REGEX = /[a-f0-9]{24,24}/;
-module.exports.PASSWORD_REGEX = /^[a-zA-Z0-9_]{3,30}$/;
-*/

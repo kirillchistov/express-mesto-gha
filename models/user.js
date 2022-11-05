@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const UnauthorizedError = require('../utils/errors/unauthorized-error');
-//  const { REGEX_URL } = require('../utils/constants');  //
 //  14.1 Добавляем в схему пользователя уник. email и пароль  //
 //  14.1 Добавляем валидацию email и avatar через validator  //
 const userSchema = new mongoose.Schema({
@@ -48,7 +47,6 @@ const userSchema = new mongoose.Schema({
   },
 }, { versionKey: false });
 
-//  Делаем поиск по email как в тренажере  //
 //  eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email })

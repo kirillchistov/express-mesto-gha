@@ -1,14 +1,7 @@
-//  Три роута GET /cards, POST /cards, DELETE /cards/:cardId  //
-//  В теле POST-запроса JSON-объект с полями: name и link  //
-
 const Card = require('../models/card');
-//  const { handleErrors, handleIdErrors } = require('../utils/handleErrors');  //
-//  const { ErrorCodes } = require('../utils/errors/error-codes');  //
-//  const IncorrectDataError = require('../utils/errors/incorrect-data-error');  //
-//  const ConflictError = require('../utils/errors/conflict-error');  //
-// const UnauthorizedError = require('../utils/errors/unauthorized-error'); //
 const ForbiddenError = require('../utils/errors/forbidden-error');
 const NoDataError = require('../utils/errors/no-data-error');
+const IncorrectDataError = require('../utils/errors/incorrect-data-error');
 
 //  Получаем все карточки   //
 module.exports.getCards = async (req, res, next) => {
@@ -20,10 +13,6 @@ module.exports.getCards = async (req, res, next) => {
   }
 };
 
-//  Функция в App.js добавляет в каждый запрос объект user  //
-//  Берем из него идентификатор пользователя в контроллере создания карточки  //
-
-//  Контроллер создания карточки - передаем name, link, owner: creatorId   //
 module.exports.createCard = async (req, res, next) => {
   try {
     const creatorId = req.user._id;
@@ -35,27 +24,28 @@ module.exports.createCard = async (req, res, next) => {
   }
 };
 
-//  Контроллер удаления карточки - передаем cardId, запускаем поиск  //
-//  Если нет карточки с таким id, обрабатываем ошибку экземпляром класса 404   //
-module.exports.deleteCard = async (req, res, next) => {
-  try {
-    const card = await Card.findByIdAndRemove(req.params.cardId);
-    if (!card) {
-      next(new NoDataError(`Карточка с id ${req.params.cardId} не найдена`));
-      return;
-    } if (card.owner.toHexString() !== req.user._id) {
-      next(new ForbiddenError('Карточку другого пользователя удалить нельзя'));
-      return;
-    }
-    await card.delete();
-    res.send({ message: `Карточка с id ${req.params.cardId} удалена` });
-  } catch (err) {
-    next(err);
-  }
+module.exports.deleteCard = (req, res, next) => {
+  Card.findById(req.params.cardId)
+    .then((card) => {
+      if (!card) {
+        throw new NoDataError(`Карточка с id ${req.params.cardId} не найдена`);
+      } else if (card.owner.toHexString() !== req.user._id) {
+        throw new ForbiddenError('Карточку другого пользователя удалить нельзя');
+      }
+      return card.delete()
+        .then(() => {
+          res.status(200).send({ data: card });
+        });
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new IncorrectDataError(`400: переданы некорректные данные для удаления карточки с id ${req.params.cardId}`));
+      } else {
+        next(err);
+      }
+    });
 };
 
-//  Контроллер добавления лайка карточке - передаем cardId, запускаем поиск  //
-//  Если в лайках нет карточки с таким id, добавляем _id в массив с new: true  //
 //  Если нет карточки с таким id, обрабатываем ошибку экземпляром класса 404   //
 module.exports.likeCard = async (req, res, next) => {
   try {
@@ -74,9 +64,6 @@ module.exports.likeCard = async (req, res, next) => {
   }
 };
 
-//  Контроллер удаления лайка карточки - передаем cardId, запускаем поиск  //
-//  Добавляем пользователя в массив, если его там ещё нет $addToSet //
-//  Убираем из массива с помощью $pull  //
 //  Если у карточки с таким id лайков нет, удаляем _id из массива  //
 //  Если нет карточки с таким id, обрабатываем ошибку (экземпляр класса 404)   //
 module.exports.dislikeCard = async (req, res, next) => {
